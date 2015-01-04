@@ -1,5 +1,6 @@
 package ru.javawebinar.webapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,5 +8,12 @@ import java.util.List;
  * 26.12.2014.
  */
 public class OrganizationSection extends Section {
-    private List<Organization> values;
+    private List<Organization> values = new ArrayList<>();
+
+    public OrganizationSection() {}
+
+    public OrganizationSection(OrganizationSection section) {
+        this.values = new ArrayList<>(section.values);
+    }
+
 }

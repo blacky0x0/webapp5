@@ -8,7 +8,7 @@ import java.util.UUID;
  * gkislin
  * 12.12.2014.
  */
-public class Resume {
+public class Resume implements Comparable<Resume> {
     private String uuid;
     private String fullName;
     private String location;
@@ -24,6 +24,14 @@ public class Resume {
         this.uuid = uuid;
         this.fullName = fullName;
         this.location = location;
+    }
+
+    public Resume(Resume resume) {
+        this(resume.fullName, resume.location);
+
+        this.homePage = resume.homePage;
+        this.contacts = new LinkedList<>(resume.contacts);
+        this.sections = new LinkedList<>(resume.sections);  // TODO: test deep clone
     }
 
     @Override
@@ -70,8 +78,45 @@ public class Resume {
         return sections;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setHomePage(String homePage) {
+        this.homePage = homePage;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
+
     @Override
     public int hashCode() {
         return uuid.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Resume{" +
+                "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", location='" + location + '\'' +
+                ", homePage='" + homePage + '\'' +
+                ", contacts=" + contacts +
+                ", sections=" + sections +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return fullName.compareToIgnoreCase(o.fullName);
     }
 }

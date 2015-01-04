@@ -7,4 +7,11 @@ package ru.javawebinar.webapp.model;
 public class TextSection extends Section{
     private String title;
     private String comment;
+
+    public TextSection() {}
+
+    public TextSection(TextSection section) {
+        this.title = section.title;
+        this.comment = section.comment;
+    }
 }
