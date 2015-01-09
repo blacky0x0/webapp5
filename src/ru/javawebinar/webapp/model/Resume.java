@@ -2,13 +2,14 @@ package ru.javawebinar.webapp.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * gkislin
  * 12.12.2014.
  */
-public class Resume {
+public class Resume implements Comparable<Resume> {
     private String uuid;
     private String fullName;
     private String location;
@@ -24,18 +25,6 @@ public class Resume {
         this.uuid = uuid;
         this.fullName = fullName;
         this.location = location;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Resume resume = (Resume) o;
-
-        if (!uuid.equals(resume.uuid)) return false;
-
-        return true;
     }
 
     public void addSection(Section section) {
@@ -70,8 +59,41 @@ public class Resume {
         return sections;
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setHomePage(String homePage) {
+        this.homePage = homePage;
+    }
+
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return Objects.hash(uuid, fullName, location, homePage, contacts, sections);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Resume other = (Resume) obj;
+        return Objects.equals(this.uuid, other.uuid) && Objects.equals(this.fullName, other.fullName) && Objects.equals(this.location, other.location) && Objects.equals(this.homePage, other.homePage) && Objects.equals(this.contacts, other.contacts) && Objects.equals(this.sections, other.sections);
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return fullName.compareTo(o.fullName);
     }
 }
