@@ -14,7 +14,7 @@ import java.util.Arrays;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class ArrayStorageTest {
+public class ArrayStorageTest extends AbstractStorageTest {
     private Resume R1, R2, R3;
 
     private ArrayStorage storage = new ArrayStorage();
