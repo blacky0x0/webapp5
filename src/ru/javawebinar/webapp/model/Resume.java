@@ -9,7 +9,7 @@ import java.util.UUID;
  * gkislin
  * 12.12.2014.
  */
-public class Resume implements Comparable<Resume> {
+public final class Resume implements Comparable<Resume> {
     private String uuid;
     private String fullName;
     private String location;
@@ -100,7 +100,7 @@ public class Resume implements Comparable<Resume> {
         return Objects.equals(this.uuid, other.uuid) && Objects.equals(this.fullName, other.fullName) && Objects.equals(this.location, other.location) && Objects.equals(this.homePage, other.homePage) && Objects.equals(this.contacts, other.contacts) && Objects.equals(this.sections, other.sections);
     }
 
-    @Override
+//    @Override
     public int compareTo(Resume o) {
         return fullName.compareToIgnoreCase(o.fullName);
     }
