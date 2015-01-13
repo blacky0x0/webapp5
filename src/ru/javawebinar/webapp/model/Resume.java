@@ -10,7 +10,7 @@ import java.util.UUID;
  * 12.12.2014.
  */
 public final class Resume implements Comparable<Resume> {
-    private String uuid;
+    private final String uuid;
     private String fullName;
     private String location;
     private String homePage;
@@ -67,10 +67,6 @@ public final class Resume implements Comparable<Resume> {
         return sections;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -85,7 +81,7 @@ public final class Resume implements Comparable<Resume> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName, location, homePage, contacts, sections);
+        return uuid.hashCode();
     }
 
     @Override
@@ -100,7 +96,7 @@ public final class Resume implements Comparable<Resume> {
         return Objects.equals(this.uuid, other.uuid) && Objects.equals(this.fullName, other.fullName) && Objects.equals(this.location, other.location) && Objects.equals(this.homePage, other.homePage) && Objects.equals(this.contacts, other.contacts) && Objects.equals(this.sections, other.sections);
     }
 
-//    @Override
+    @Override
     public int compareTo(Resume o) {
         return fullName.compareToIgnoreCase(o.fullName);
     }

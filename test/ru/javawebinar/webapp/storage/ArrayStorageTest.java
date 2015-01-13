@@ -14,11 +14,12 @@ import java.util.Arrays;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class ArrayStorageTest {
-    private static Resume R1, R2, R3;
-    private static final int NUMBER_OF_RESUMES = 3;
+public class ArrayStorageTest extends AbstractStorageTest {
+    private Resume R1, R2, R3;
 
     private ArrayStorage storage = new ArrayStorage();
+
+    private static final int NUMBER_OF_RESUMES = 3;
 
     @BeforeClass
     public static void beforeClass() {
