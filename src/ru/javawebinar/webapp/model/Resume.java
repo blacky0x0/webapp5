@@ -2,6 +2,7 @@ package ru.javawebinar.webapp.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -32,18 +33,6 @@ public class Resume implements Comparable<Resume> {
         this.homePage = resume.homePage;
         this.contacts = new LinkedList<>(resume.contacts);
         this.sections = new LinkedList<>(resume.sections);  // TODO: test deep clone
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Resume resume = (Resume) o;
-
-        if (!uuid.equals(resume.uuid)) return false;
-
-        return true;
     }
 
     public void addSection(Section section) {
@@ -78,6 +67,10 @@ public class Resume implements Comparable<Resume> {
         return sections;
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -90,17 +83,26 @@ public class Resume implements Comparable<Resume> {
         this.homePage = homePage;
     }
 
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
-    }
-
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, fullName, location, homePage, contacts, sections);
     }
 
     @Override
-    public int hashCode() {
-        return uuid.hashCode();
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Resume other = (Resume) obj;
+        return Objects.equals(this.uuid, other.uuid) && Objects.equals(this.fullName, other.fullName) && Objects.equals(this.location, other.location) && Objects.equals(this.homePage, other.homePage) && Objects.equals(this.contacts, other.contacts) && Objects.equals(this.sections, other.sections);
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return fullName.compareToIgnoreCase(o.fullName);
     }
 
     @Override
@@ -113,10 +115,5 @@ public class Resume implements Comparable<Resume> {
                 ", contacts=" + contacts +
                 ", sections=" + sections +
                 '}';
-    }
-
-    @Override
-    public int compareTo(Resume o) {
-        return fullName.compareToIgnoreCase(o.fullName);
     }
 }
