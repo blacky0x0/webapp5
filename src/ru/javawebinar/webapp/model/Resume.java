@@ -81,7 +81,7 @@ public final class Resume implements Comparable<Resume> {
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return Objects.hash(fullName, location, homePage, contacts, sections);
     }
 
     @Override
@@ -93,7 +93,7 @@ public final class Resume implements Comparable<Resume> {
             return false;
         }
         final Resume other = (Resume) obj;
-        return Objects.equals(this.uuid, other.uuid) && Objects.equals(this.fullName, other.fullName) && Objects.equals(this.location, other.location) && Objects.equals(this.homePage, other.homePage) && Objects.equals(this.contacts, other.contacts) && Objects.equals(this.sections, other.sections);
+        return Objects.equals(this.fullName, other.fullName) && Objects.equals(this.location, other.location) && Objects.equals(this.homePage, other.homePage) && Objects.equals(this.contacts, other.contacts) && Objects.equals(this.sections, other.sections);
     }
 
     @Override
