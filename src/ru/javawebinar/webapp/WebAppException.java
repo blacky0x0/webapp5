@@ -34,6 +34,11 @@ public class WebAppException extends RuntimeException {
         this.uuid = uuid;
     }
 
+    public WebAppException(String message, String uuid, Throwable e) {
+        super(message, e);
+        this.uuid = uuid;
+    }
+
     public Resume getResume() {
         return resume;
     }

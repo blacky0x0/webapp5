@@ -22,58 +22,38 @@ public class ArrayStorage extends AbstractStorage {
     private int size = 0;
 
     @Override
-    public void clear() {
-        logger.info("Delete all resumes.");
+    public void doClear() {
         Arrays.fill(array, null);
         size = 0;
     }
 
     @Override
     protected void doSave(Resume r) {
-        if (r == null)
-            throw new IllegalStateException("You can't add a null element.");
-
         if (size == LIMIT)
             throw new IllegalStateException("You can't add a new resume anymore. The limit has been reached.");
 
         int idx = getIndex(r.getUuid());
-/*
-            try {
-                throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
-            } catch (WebAppException e) {
-                logger.log(Level.SEVERE, e.getMessage(), e);
-                throw new IllegalStateException(e);
-            }
-*/
+
         if (idx != -1) throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
         array[size++] = r;
     }
 
     @Override
-    public void update(Resume r) {
-        if (r == null)
-            throw new IllegalStateException("You can't update to a null element.");
-
-        logger.info("Update resume with " + r.getUuid());
+    public void doUpdate(Resume r) {
         int idx = getIndex(r.getUuid());
         if (idx == -1) throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
         array[idx] = r;
     }
 
     @Override
-    public Resume load(String uuid) {
-        if (uuid == null || uuid.isEmpty())
-            throw new IllegalArgumentException("Illegal UUID string.");
-
-        logger.info("Load resume with uuid=" + uuid);
+    public Resume doLoad(String uuid) {
         int idx = getIndex(uuid);
         if (idx == -1) throw new WebAppException("Resume " + uuid + "not exist");
         return array[idx];
     }
 
     @Override
-    public void delete(String uuid) {
-        logger.info("Delete resume with uuid=" + uuid);
+    public void doDelete(String uuid) {
         int idx = getIndex(uuid);
         if (idx == -1) throw new WebAppException("Resume " + uuid + "not exist");
         int numMoved = size - idx - 1;

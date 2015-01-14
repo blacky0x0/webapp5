@@ -14,11 +14,11 @@ public interface IStorage {
 
     void save(Resume r) throws WebAppException;
 
-    void update(Resume r);
+    void update(Resume r) throws WebAppException;
 
-    Resume load(String uuid);
+    Resume load(String uuid) throws WebAppException;
 
-    void delete(String uuid);
+    void delete(String uuid) throws WebAppException;
 
     Collection<Resume> getAllSorted();
 
