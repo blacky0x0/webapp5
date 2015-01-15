@@ -30,32 +30,24 @@ public class ArrayStorage extends AbstractStorage {
     @Override
     protected void doSave(Resume r) {
         if (size == LIMIT)
-            throw new IllegalStateException("You can't add a new resume anymore. The limit has been reached.");
-
-        int idx = getIndex(r.getUuid());
-
-        if (idx != -1) throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
+            throw new WebAppException("You can't add a new resume anymore. The limit has been reached.");
         array[size++] = r;
     }
 
     @Override
     public void doUpdate(Resume r) {
-        int idx = getIndex(r.getUuid());
-        if (idx == -1) throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
-        array[idx] = r;
+        array[getIndex(r.getUuid())] = r;
     }
 
     @Override
     public Resume doLoad(String uuid) {
-        int idx = getIndex(uuid);
-        if (idx == -1) throw new WebAppException("Resume " + uuid + "not exist");
-        return array[idx];
+        return array[getIndex(uuid)];
     }
 
     @Override
     public void doDelete(String uuid) {
         int idx = getIndex(uuid);
-        if (idx == -1) throw new WebAppException("Resume " + uuid + "not exist");
+
         int numMoved = size - idx - 1;
         if (numMoved > 0)
             System.arraycopy(array, idx+1, array, idx,
@@ -84,5 +76,15 @@ public class ArrayStorage extends AbstractStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected boolean isExist(Resume resume) {
+        return getIndex(resume.getUuid()) != -1;
+    }
+
+    @Override
+    protected boolean isExist(String uuid) {
+        return getIndex(uuid) != -1;
     }
 }

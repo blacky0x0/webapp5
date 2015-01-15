@@ -27,10 +27,12 @@ abstract public class AbstractStorage implements IStorage {
         logger.info("Save resume with uuid = " + r.getUuid());
         // TODO try to move here exception treatment
 
-        try { doSave(r); }
-        catch (RuntimeException e) {
-            throw new WebAppException("Can't save the resume", r, e);
+        if (!isExist(r)) {
+            doSave(r);
+            return;
         }
+
+        throw new WebAppException("Resume " + r.getUuid() + " already exist", r);
     }
 
     @Override
@@ -40,33 +42,34 @@ abstract public class AbstractStorage implements IStorage {
 
         logger.info("Update resume with uuid = " + r.getUuid());
 
-        try { doUpdate(r); }
-        catch (RuntimeException e) {
-            throw new WebAppException("Can't update the resume", r, e);
+        if (isExist(r)) {
+            doUpdate(r);
+            return;
         }
+
+        throw new WebAppException("Resume " + r.getUuid() + " not exist");
     }
 
     @Override
     public Resume load(String uuid) {
         logger.info("Load resume with uuid=" + uuid);
-        Resume result;
 
-        try { result = doLoad(uuid); }
-        catch (RuntimeException e) {
-            throw new WebAppException("Can't load the resume", uuid, e);
-        }
+        if (isExist(uuid))
+            return doLoad(uuid);
 
-        return result;
+        throw new WebAppException("Can't load the resume", uuid);
     }
 
     @Override
     public void delete(String uuid) {
         logger.info("Delete resume with uuid=" + uuid);
 
-        try { doDelete(uuid); }
-        catch (RuntimeException e) {
-            throw new WebAppException("Can't delete the resume", uuid, e);
+        if (isExist(uuid)) {
+            doDelete(uuid);
+            return;
         }
+
+        throw new WebAppException("Can't delete the resume", uuid);
     }
 
 
@@ -80,4 +83,7 @@ abstract public class AbstractStorage implements IStorage {
 
     protected abstract void doDelete(String uuid);
 
+    protected abstract boolean isExist(Resume resume);
+
+    protected abstract boolean isExist(String uuid);
 }

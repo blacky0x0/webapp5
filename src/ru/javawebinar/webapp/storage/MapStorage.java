@@ -1,6 +1,5 @@
 package ru.javawebinar.webapp.storage;
 
-import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.util.*;
@@ -48,5 +47,15 @@ public class MapStorage extends AbstractStorage {
     @Override
     public int size() {
         return map.size();
+    }
+
+    @Override
+    protected boolean isExist(Resume resume) {
+        return map.containsValue(resume);
+    }
+
+    @Override
+    protected boolean isExist(String uuid) {
+        return map.containsKey(uuid);
     }
 }
