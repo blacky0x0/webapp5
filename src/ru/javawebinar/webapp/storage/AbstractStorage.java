@@ -27,12 +27,10 @@ abstract public class AbstractStorage implements IStorage {
         logger.info("Save resume with uuid = " + r.getUuid());
         // TODO try to move here exception treatment
 
-        if (!isExist(r)) {
-            doSave(r);
-            return;
-        }
+        if (isExist(r))
+            throw new WebAppException("Resume " + r.getUuid() + " already exist", r);
 
-        throw new WebAppException("Resume " + r.getUuid() + " already exist", r);
+        doSave(r);
     }
 
     @Override
@@ -42,34 +40,30 @@ abstract public class AbstractStorage implements IStorage {
 
         logger.info("Update resume with uuid = " + r.getUuid());
 
-        if (isExist(r)) {
-            doUpdate(r);
-            return;
-        }
+        if (!isExist(r))
+            throw new WebAppException("Resume " + r.getUuid() + " not exist");
 
-        throw new WebAppException("Resume " + r.getUuid() + " not exist");
+        doUpdate(r);
     }
 
     @Override
     public Resume load(String uuid) {
         logger.info("Load resume with uuid=" + uuid);
 
-        if (isExist(uuid))
-            return doLoad(uuid);
+        if (!isExist(uuid))
+            throw new WebAppException("Can't load the resume", uuid);
 
-        throw new WebAppException("Can't load the resume", uuid);
+        return doLoad(uuid);
     }
 
     @Override
     public void delete(String uuid) {
         logger.info("Delete resume with uuid=" + uuid);
 
-        if (isExist(uuid)) {
-            doDelete(uuid);
-            return;
-        }
+        if (!isExist(uuid))
+            throw new WebAppException("Can't delete the resume", uuid);
 
-        throw new WebAppException("Can't delete the resume", uuid);
+        doDelete(uuid);
     }
 
 
