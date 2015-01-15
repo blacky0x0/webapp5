@@ -77,7 +77,9 @@ abstract public class AbstractStorage implements IStorage {
 
     protected abstract void doDelete(String uuid);
 
-    protected abstract boolean isExist(Resume resume);
+    protected boolean isExist(Resume resume) {
+        return isExist(resume.getUuid());
+    }
 
     protected abstract boolean isExist(String uuid);
 }
