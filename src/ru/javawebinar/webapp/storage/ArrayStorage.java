@@ -4,7 +4,7 @@ import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 //import java.util.logging.Level;
 
 
@@ -14,68 +14,47 @@ import java.util.Collection;
  */
 public class ArrayStorage extends AbstractStorage {
     private static final int LIMIT = 100;
-    //    protected Logger logger = Logger.getLogger(getClass().getName());
-//    private static Logger logger = Logger.getLogger(ArrayStorage.class.getName());
 
     private Resume[] array = new Resume[LIMIT];
     private int size = 0;
 
     @Override
-    public void clear() {
-        logger.info("Delete all resumes.");
+    protected void doClear() {
         Arrays.fill(array, null);
         size = 0;
     }
 
     @Override
-    protected void doSave(Resume r) {
-        int idx = getIndex(r.getUuid());
-/*
-            try {
-                throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
-            } catch (WebAppException e) {
-                logger.log(Level.SEVERE, e.getMessage(), e);
-                throw new IllegalStateException(e);
-            }
-*/
-        if (idx != -1) throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
-        array[size++] = r;
+    protected boolean exist(String uuid) {
+        return getIndex(uuid) != -1;
     }
 
     @Override
-    public void update(Resume r) {
-        logger.info("Update resume with " + r.getUuid());
+    protected void doUpdate(Resume r) {
         int idx = getIndex(r.getUuid());
         if (idx == -1) throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
         array[idx] = r;
     }
 
     @Override
-    public Resume load(String uuid) {
-        logger.info("Load resume with uuid=" + uuid);
+    protected Resume doLoad(String uuid) {
         int idx = getIndex(uuid);
-        if (idx == -1) throw new WebAppException("Resume " + uuid + "not exist");
         return array[idx];
     }
 
     @Override
-    public void delete(String uuid) {
-        logger.info("Delete resume with uuid=" + uuid);
+    protected void doDelete(String uuid) {
         int idx = getIndex(uuid);
-        if (idx == -1) throw new WebAppException("Resume " + uuid + "not exist");
         int numMoved = size - idx - 1;
         if (numMoved > 0)
-            System.arraycopy(array, idx+1, array, idx,
+            System.arraycopy(array, idx + 1, array, idx,
                     numMoved);
         array[--size] = null; // clear to let GC do its work
-
     }
 
     @Override
-    public Collection<Resume> getAllSorted() {
-        // TODO via comparator
-        Arrays.sort(array, 0, size);
-        return Arrays.asList(Arrays.copyOf(array, size));
+    protected void doSave(Resume r) {
+        array[size++] = r;
     }
 
     @Override
@@ -92,5 +71,10 @@ public class ArrayStorage extends AbstractStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected List<Resume> doGetAll() {
+        return Arrays.asList(Arrays.copyOf(array, size));
     }
 }

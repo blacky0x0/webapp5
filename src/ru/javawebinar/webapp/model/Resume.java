@@ -10,7 +10,7 @@ import java.util.UUID;
  * 12.12.2014.
  */
 public final class Resume implements Comparable<Resume> {
-    private final String uuid;
+    private String uuid;
     private String fullName;
     private String location;
     private String homePage;
@@ -25,6 +25,9 @@ public final class Resume implements Comparable<Resume> {
         this.uuid = uuid;
         this.fullName = fullName;
         this.location = location;
+    }
+
+    public Resume() {
     }
 
     public void addSection(Section section) {
