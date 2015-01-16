@@ -1,10 +1,12 @@
 package ru.javawebinar.webapp.storage;
 
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -12,7 +14,7 @@ import java.util.logging.Logger;
  * blacky0x0
  * 09.01.2015.
  */
-abstract public class AbstractStorage implements IStorage {
+abstract public class AbstractStorage<C> implements IStorage {
     protected final Logger logger = Logger.getLogger(getClass().getName());
 
     @Override
@@ -23,7 +25,9 @@ abstract public class AbstractStorage implements IStorage {
 
     protected abstract void doClear();
 
-    protected abstract boolean exist(String uuid);
+    protected abstract C getContext(String uuid);
+
+    protected abstract boolean exist(C ctx);
 
     @Override
     public void save(Resume r) {
@@ -31,13 +35,14 @@ abstract public class AbstractStorage implements IStorage {
             throw new WebAppException("You can't add a null element");
 
         logger.info("Save resume with uuid=" + r.getUuid());
-        if (exist(r.getUuid())) {
+        C ctx = getContext(r);
+        if (exist(ctx)) {
             throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
         }
-        doSave(r);
+        doSave(ctx, r);
     }
 
-    protected abstract void doSave(Resume r);
+    protected abstract void doSave(C ctx, Resume r);
 
     @Override
     public void update(Resume r) {
@@ -45,35 +50,38 @@ abstract public class AbstractStorage implements IStorage {
             throw new WebAppException("You can't update a null element");
 
         logger.info("Update resume with " + r.getUuid());
-        if (!exist(r.getUuid())) {
+        C ctx = getContext(r);
+        if (!exist(ctx)) {
             throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
         }
-        doUpdate(r);
+        doUpdate(ctx, r);
     }
 
-    protected abstract void doUpdate(Resume r);
+    protected abstract void doUpdate(C ctx, Resume r);
 
     @Override
     public Resume load(String uuid) {
         logger.info("Load resume with uuid=" + uuid);
-        if (!exist(uuid)) {
-            throw new WebAppException("Resume " + uuid + "not exist", uuid);
+        C ctx = getContext(uuid);
+        if (!exist(ctx)) {
+            throw new WebAppException("Resume " + uuid + "not exist");
         }
-        return doLoad(uuid);
+        return doLoad(ctx, uuid);
     }
 
-    protected abstract Resume doLoad(String uuid);
+    protected abstract Resume doLoad(C ctx, String uuid);
 
     @Override
     public void delete(String uuid) {
         logger.info("Delete resume with uuid=" + uuid);
-        if (!exist(uuid)) {
+        C ctx = getContext(uuid);
+        if (!exist(ctx)) {
             throw new WebAppException("Resume " + uuid + "not exist", uuid);
         }
-        doDelete(uuid);
+        doDelete(ctx, uuid);
     }
 
-    protected abstract void doDelete(String uuid);
+    protected abstract void doDelete(C ctx, String uuid);
 
     @Override
     public Collection<Resume> getAllSorted() {
@@ -102,4 +110,7 @@ abstract public class AbstractStorage implements IStorage {
 
     public abstract int size();
 
+    private C getContext(Resume r) {
+        return getContext(r.getUuid());
+    }
 }
