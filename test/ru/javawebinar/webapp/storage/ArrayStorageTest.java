@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.Contact;
 import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
 

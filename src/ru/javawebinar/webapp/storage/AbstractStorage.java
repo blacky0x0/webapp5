@@ -1,11 +1,10 @@
 package ru.javawebinar.webapp.storage;
 
 import ru.javawebinar.webapp.WebAppException;
+import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -73,8 +72,22 @@ abstract public class AbstractStorage implements IStorage {
     public Collection<Resume> getAllSorted() {
         logger.info("getAllSorted");
         List<Resume> list = doGetAll();
-        Collections.sort(list);
-//        return Collections.singletonList(new Resume());
+        Collections.sort(list, new Comparator<Resume>() {
+            @Override
+            public int compare(Resume o1, Resume o2) {
+                int cmp = o1.getFullName().compareTo(o2.getFullName());
+                if (cmp != 0) return cmp;
+                return o1.getUuid().compareTo(o2.getUuid());
+            }
+        });
+/*
+        Collections.sort(list, (Resume o1, Resume o2) -> {
+            int cmp = o1.getFullName().compareTo(o2.getFullName());
+            if (cmp != 0) return cmp;
+            return o1.getUuid().compareTo(o2.getUuid());
+        });
+        return Collections.singletonList(new Resume());
+*/
         return list;
     }
 

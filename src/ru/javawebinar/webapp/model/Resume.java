@@ -1,20 +1,18 @@
 package ru.javawebinar.webapp.model;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * gkislin
  * 12.12.2014.
  */
-public final class Resume implements Comparable<Resume> {
+public final class Resume {//implements Comparable<Resume> {
     private String uuid;
     private String fullName;
     private String location;
     private String homePage;
-    private List<Contact> contacts = new LinkedList<>();
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+
     private List<Section> sections = new LinkedList<>();
 
     public Resume(String fullName, String location) {
@@ -34,8 +32,12 @@ public final class Resume implements Comparable<Resume> {
         sections.add(section);
     }
 
-    public void addContact(Contact contact) {
-        contacts.add(contact);
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
     }
 
     public String getUuid() {
@@ -52,10 +54,6 @@ public final class Resume implements Comparable<Resume> {
 
     public String getHomePage() {
         return homePage;
-    }
-
-    public List<Contact> getContacts() {
-        return contacts;
     }
 
     public List<Section> getSections() {
@@ -91,8 +89,19 @@ public final class Resume implements Comparable<Resume> {
         return Objects.equals(this.uuid, other.uuid) && Objects.equals(this.fullName, other.fullName) && Objects.equals(this.location, other.location) && Objects.equals(this.homePage, other.homePage) && Objects.equals(this.contacts, other.contacts) && Objects.equals(this.sections, other.sections);
     }
 
-    @Override
+    //    @Override
     public int compareTo(Resume o) {
         return fullName.compareTo(o.fullName);
     }
+
+/*
+    private String getEmail(List<Contact> list) {
+        for (Contact c : list) {
+            if (c.getType() == ContactType.MAIL) {
+                return c.getValue();
+            }
+        }
+        return null;
+    }
+*/
 }
