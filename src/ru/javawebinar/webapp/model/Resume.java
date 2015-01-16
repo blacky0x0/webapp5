@@ -6,7 +6,7 @@ import java.util.*;
  * gkislin
  * 12.12.2014.
  */
-public final class Resume {//implements Comparable<Resume> {
+public class Resume {//implements Comparable<Resume> {
     private String uuid;
     private String fullName;
     private String location;
@@ -94,6 +94,11 @@ public final class Resume {//implements Comparable<Resume> {
         return fullName.compareTo(o.fullName);
     }
 
+    @Override
+    public String toString() {
+        return "fullName" + fullName + " (" + uuid + ")";
+    }
+
 /*
     private String getEmail(List<Contact> list) {
         for (Contact c : list) {
@@ -104,4 +109,5 @@ public final class Resume {//implements Comparable<Resume> {
         return null;
     }
 */
+
 }
