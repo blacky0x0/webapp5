@@ -10,6 +10,8 @@ import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -21,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 public abstract class AbstractStorageTest {
     protected Resume R1, R2, R3;
 
-    protected static IStorage storage;
+    protected IStorage storage;
 
     protected final int NUMBER_OF_RESUMES = 3;
 
@@ -104,13 +106,32 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void testGetAllSorted() throws Exception {
-        Resume[] src = new Resume[]{R1, R2, R3};
-        Arrays.sort(src);
-        assertArrayEquals(src, storage.getAllSorted().toArray());
+//        Resume[] src = new Resume[]{R1, R2, R3};
+//        Arrays.sort(src);
+//        assertArrayEquals(src, storage.getAllSorted().toArray());
+        List<Resume> list = Arrays.asList(R1, R2, R3);
+        Collections.sort(list);
+        assertEquals(list, storage.getAllSorted());
     }
 
     @Test
     public void testSize() throws Exception {
         Assert.assertEquals(NUMBER_OF_RESUMES, storage.size());
+    }
+
+    @Test(expected = WebAppException.class)
+    public void testDeleteMissed() throws Exception {
+        storage.delete("dummy");
+    }
+
+    @Test(expected = WebAppException.class)
+    public void testSavePresented() throws Exception {
+        storage.save(R1);
+    }
+
+    @Test(expected = WebAppException.class)
+    public void testUpdateMissed() throws Exception {
+        Resume resume = new Resume("dummy", "fullName_U1", "location_U1");
+        storage.update(resume);
     }
 }

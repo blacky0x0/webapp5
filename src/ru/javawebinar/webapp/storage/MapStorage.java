@@ -2,7 +2,10 @@ package ru.javawebinar.webapp.storage;
 
 import ru.javawebinar.webapp.model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * GKislin
@@ -10,7 +13,8 @@ import java.util.*;
  * 09.01.2015.
  */
 public class MapStorage extends AbstractStorage {
-    private final Map<String, Resume> map = new HashMap<>();
+
+    private Map<String, Resume> map = new HashMap<>();
 
     @Override
     public void doClear() {
@@ -18,13 +22,18 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume r) {
+    protected boolean exist(String uuid) {
+        return map.containsKey(uuid);
+    }
+
+    @Override
+    public void doSave(Resume r) {
         map.put(r.getUuid(), r);
     }
 
     @Override
     public void doUpdate(Resume r) {
-        map.replace(r.getUuid(), r);
+        map.put(r.getUuid(), r);
     }
 
     @Override
@@ -38,10 +47,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Collection<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>(map.values());
-        Collections.sort(list);
-        return list;
+    public List<Resume> doGetAll() {
+        return new ArrayList<>(map.values());
     }
 
     @Override
@@ -49,8 +56,4 @@ public class MapStorage extends AbstractStorage {
         return map.size();
     }
 
-    @Override
-    protected boolean isExist(String uuid) {
-        return map.containsKey(uuid);
-    }
 }
