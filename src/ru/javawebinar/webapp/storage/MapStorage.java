@@ -12,7 +12,7 @@ import java.util.Map;
  * blacky0x0
  * 09.01.2015.
  */
-public class MapStorage {//extends AbstractStorage {
+public class MapStorage extends AbstractStorage<String> {
 
     private Map<String, Resume> map = new HashMap<>();
 
@@ -20,23 +20,32 @@ public class MapStorage {//extends AbstractStorage {
         map.clear();
     }
 
+    @Override
+    protected String getContext(String uuid) {
+        return uuid;
+    }
+
     protected boolean exist(String uuid) {
         return map.containsKey(uuid);
     }
 
-    public void doSave(Resume r) {
+    @Override
+    protected void doSave(String ctx, Resume r) {
         map.put(r.getUuid(), r);
     }
 
-    public void doUpdate(Resume r) {
+    @Override
+    protected void doUpdate(String ctx, Resume r) {
         map.put(r.getUuid(), r);
     }
 
-    public Resume doLoad(String uuid) {
+    @Override
+    protected Resume doLoad(String ctx, String uuid) {
         return map.get(uuid);
     }
 
-    public void doDelete(String uuid) {
+    @Override
+    protected void doDelete(String ctx, String uuid) {
         map.remove(uuid);
     }
 
