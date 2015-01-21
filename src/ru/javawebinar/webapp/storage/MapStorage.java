@@ -31,22 +31,22 @@ public class MapStorage extends AbstractStorage<String> {
 
     @Override
     protected void doSave(String ctx, Resume r) {
-        map.put(r.getUuid(), r);
+        map.put(ctx, r);
     }
 
     @Override
     protected void doUpdate(String ctx, Resume r) {
-        map.put(r.getUuid(), r);
+        map.put(ctx, r);
     }
 
     @Override
     protected Resume doLoad(String ctx, String uuid) {
-        return map.get(uuid);
+        return map.get(ctx);
     }
 
     @Override
     protected void doDelete(String ctx, String uuid) {
-        map.remove(uuid);
+        map.remove(ctx);
     }
 
     public List<Resume> doGetAll() {
