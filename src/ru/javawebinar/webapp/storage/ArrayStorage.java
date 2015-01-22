@@ -1,6 +1,5 @@
 package ru.javawebinar.webapp.storage;
 
-import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -35,12 +34,12 @@ public class ArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected Resume doLoad(Integer idx, String uuid) {
+    protected Resume doLoad(Integer idx) {
         return array[idx];
     }
 
     @Override
-    protected void doDelete(Integer idx, String uuid) {
+    protected void doDelete(Integer idx) {
         int numMoved = size - idx - 1;
         if (numMoved > 0)
             System.arraycopy(array, idx + 1, array, idx,

@@ -59,10 +59,10 @@ abstract public class AbstractStorage<C> implements IStorage {
         if (!exist(ctx)) {
             throw new WebAppException("Resume " + uuid + "not exist");
         }
-        return doLoad(ctx, uuid);
+        return doLoad(ctx);
     }
 
-    protected abstract Resume doLoad(C ctx, String uuid);
+    protected abstract Resume doLoad(C ctx);
 
     @Override
     public void delete(String uuid) {
@@ -71,10 +71,10 @@ abstract public class AbstractStorage<C> implements IStorage {
         if (!exist(ctx)) {
             throw new WebAppException("Resume " + uuid + "not exist", uuid);
         }
-        doDelete(ctx, uuid);
+        doDelete(ctx);
     }
 
-    protected abstract void doDelete(C ctx, String uuid);
+    protected abstract void doDelete(C ctx);
 
     @Override
     public Collection<Resume> getAllSorted() {
