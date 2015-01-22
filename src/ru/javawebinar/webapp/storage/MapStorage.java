@@ -40,12 +40,12 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected Resume doLoad(String ctx, String uuid) {
+    protected Resume doLoad(String ctx) {
         return map.get(ctx);
     }
 
     @Override
-    protected void doDelete(String ctx, String uuid) {
+    protected void doDelete(String ctx) {
         map.remove(ctx);
     }
 
