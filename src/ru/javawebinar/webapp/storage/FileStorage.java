@@ -1,17 +1,17 @@
 package ru.javawebinar.webapp.storage;
 
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * GKislin
  * 23.01.2015.
  */
+// TODO try reduce code in subclasses
 public abstract class FileStorage extends AbstractStorage<File> {
     private File dir;
 
