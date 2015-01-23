@@ -1,19 +1,29 @@
 package ru.javawebinar.webapp.model;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * gkislin
  * 12.12.2014.
  */
-public class Resume {//implements Comparable<Resume> {
+// TODO add Serializable and serialVersionUID to all model classes
+public class Resume implements Serializable {
+    static final long serialVersionUID = 1L;
+
     private String uuid;
     private String fullName;
     private String location;
     private String homePage;
     private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
-    private List<Section> sections = new LinkedList<>();
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+
+    public static final Resume EMPTY;
+
+    static {
+        EMPTY = new Resume();
+    }
 
     public Resume(String fullName, String location) {
         this(UUID.randomUUID().toString(), fullName, location);
@@ -28,8 +38,16 @@ public class Resume {//implements Comparable<Resume> {
     public Resume() {
     }
 
-    public void addSection(Section section) {
-        sections.add(section);
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
+    public void addSection(SectionType type, Section section) {
+        sections.put(type, section);
     }
 
     public String getContact(ContactType type) {
@@ -56,8 +74,8 @@ public class Resume {//implements Comparable<Resume> {
         return homePage;
     }
 
-    public List<Section> getSections() {
-        return sections;
+    public Section getSections(SectionType type) {
+        return sections.get(type);
     }
 
     public void setFullName(String fullName) {
