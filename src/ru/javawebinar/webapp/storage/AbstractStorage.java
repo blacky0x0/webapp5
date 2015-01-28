@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 /**
  * GKislin
- * blacky0x0
  * 09.01.2015.
  */
 abstract public class AbstractStorage<C> implements IStorage {
@@ -31,9 +30,6 @@ abstract public class AbstractStorage<C> implements IStorage {
 
     @Override
     public void save(Resume r) {
-        if (r == null)
-            throw new WebAppException("You can't add a null element");
-
         logger.info("Save resume with uuid=" + r.getUuid());
         C ctx = getContext(r);
         if (exist(ctx)) {
@@ -46,9 +42,6 @@ abstract public class AbstractStorage<C> implements IStorage {
 
     @Override
     public void update(Resume r) {
-        if (r == null)
-            throw new WebAppException("You can't update a null element");
-
         logger.info("Update resume with " + r.getUuid());
         C ctx = getContext(r);
         if (!exist(ctx)) {

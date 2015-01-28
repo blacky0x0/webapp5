@@ -20,12 +20,10 @@ import static org.junit.Assert.assertEquals;
  * GKislin
  * 09.01.2015.
  */
-public abstract class AbstractStorageTest {
-    protected Resume R1, R2, R3;
+abstract public class AbstractStorageTest {
+    private Resume R1, R2, R3;
 
     protected IStorage storage;
-
-    protected final int NUMBER_OF_RESUMES = 3;
 
     @BeforeClass
     public static void beforeClass() {
@@ -45,38 +43,18 @@ public abstract class AbstractStorageTest {
         storage.save(R3);
         storage.save(R1);
         storage.save(R2);
+        // TODO add sections
     }
 
     @Test
     public void testSave() throws Exception {
-        Resume R4 = new Resume("fullname", "Super location");
-        R4.addContact(ContactType.MAIL, "resume@ya.ru");
 
-        storage.save(R4);
-        Assert.assertEquals(R4, storage.load(R4.getUuid()));
-        Assert.assertEquals(NUMBER_OF_RESUMES + 1, storage.size());
-    }
-
-    @Test (expected = WebAppException.class)
-    public void testSaveNull() throws Exception {
-        storage.save(null);
-        Assert.assertEquals(NUMBER_OF_RESUMES, storage.size());
-    }
-
-    @Test (expected = WebAppException.class)
-    public void testSaveClone() throws Exception {
-        storage.save(R1);
     }
 
     @Test
     public void testClear() throws Exception {
         storage.clear();
         assertEquals(0, storage.size());
-    }
-
-    @Test (expected = WebAppException.class)
-    public void testUpdateNull() throws Exception {
-        storage.update(null);
     }
 
     @Test
@@ -101,7 +79,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void testDelete() throws Exception {
         storage.delete(R1.getUuid());
-        Assert.assertEquals(NUMBER_OF_RESUMES - 1, storage.size());
+        Assert.assertEquals(2, storage.size());
     }
 
     @Test
@@ -121,7 +99,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void testSize() throws Exception {
-        Assert.assertEquals(NUMBER_OF_RESUMES, storage.size());
+        Assert.assertEquals(3, storage.size());
     }
 
     @Test(expected = WebAppException.class)

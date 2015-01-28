@@ -9,52 +9,55 @@ import java.util.Map;
 
 /**
  * GKislin
- * blacky0x0
  * 09.01.2015.
  */
+
 public class MapStorage extends AbstractStorage<String> {
 
-    private Map<String, Resume> map = new HashMap<>();
-
-    public void doClear() {
-        map.clear();
-    }
+    private Map<String, Resume> MAP = new HashMap<>();
 
     @Override
     protected String getContext(String uuid) {
         return uuid;
     }
 
+    @Override
     protected boolean exist(String uuid) {
-        return map.containsKey(uuid);
+        return MAP.containsKey(uuid);
     }
 
     @Override
-    protected void doSave(String ctx, Resume r) {
-        map.put(ctx, r);
+    protected void doClear() {
+        MAP.clear();
     }
 
     @Override
-    protected void doUpdate(String ctx, Resume r) {
-        map.put(ctx, r);
+    protected void doSave(String uuid, Resume r) {
+        MAP.put(uuid, r);
     }
 
     @Override
-    protected Resume doLoad(String ctx) {
-        return map.get(ctx);
+    protected void doUpdate(String uuid, Resume r) {
+        MAP.put(uuid, r);
     }
 
     @Override
-    protected void doDelete(String ctx) {
-        map.remove(ctx);
+    protected Resume doLoad(String uuid) {
+        return MAP.get(uuid);
     }
 
-    public List<Resume> doGetAll() {
-        return new ArrayList<>(map.values());
+    @Override
+    protected void doDelete(String uuid) {
+        MAP.remove(uuid);
     }
 
+    @Override
+    protected List<Resume> doGetAll() {
+        return new ArrayList<>(MAP.values());
+    }
+
+    @Override
     public int size() {
-        return map.size();
+        return MAP.size();
     }
-
 }
