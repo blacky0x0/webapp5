@@ -1,10 +1,14 @@
 package ru.javawebinar.webapp.model;
 
+import java.io.Serializable;
+
 /**
  * GKislin
  * 19.12.2014.
  */
-public class Link {
+public class Link implements Serializable {
+    static final long serialVersionUID = 1L;
+
     public static Link EMPTY = new Link();
 
     private final String name;

@@ -14,4 +14,12 @@ public class TextSection extends Section{
         this.title = section.title;
         this.comment = section.comment;
     }
+
+    @Override
+    public String toString() {
+        return "TextSection{" +
+                "title='" + title + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
 }

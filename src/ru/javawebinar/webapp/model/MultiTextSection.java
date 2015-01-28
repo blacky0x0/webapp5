@@ -15,4 +15,11 @@ public class MultiTextSection extends Section {
     public MultiTextSection(MultiTextSection section) {
         this.values = new ArrayList<>(section.values);
     }
+
+    @Override
+    public String toString() {
+        return "MultiTextSection{" +
+                "values=" + values +
+                '}';
+    }
 }

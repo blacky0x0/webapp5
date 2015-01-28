@@ -7,7 +7,6 @@ import java.util.*;
  * gkislin
  * 12.12.2014.
  */
-// TODO add Serializable and serialVersionUID to all model classes
 public class Resume implements Serializable {
     static final long serialVersionUID = 1L;
 
@@ -118,10 +117,18 @@ public class Resume implements Serializable {
 
     @Override
     public String toString() {
-        return "fullName" + fullName + " (" + uuid + ")";
+        return "Resume{" +
+                "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", location='" + location + '\'' +
+                ", homePage='" + homePage + '\'' +
+                ", contacts=" + contacts +
+                ", sections=" + sections +
+                '}';
     }
 
-/*
+
+    /*
     private String getEmail(List<Contact> list) {
         for (Contact c : list) {
             if (c.getType() == ContactType.MAIL) {
