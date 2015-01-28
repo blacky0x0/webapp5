@@ -17,12 +17,29 @@ public class DataStreamFileStorage extends FileStorage {
         super(path);
     }
 
+    protected boolean isNotNull(String str) {
+        return str != null;
+    }
+
     protected void write(File file, Resume r) {
         try (FileOutputStream fos = new FileOutputStream(file); DataOutputStream dos = new DataOutputStream(fos)) {
-            // TODO fix NullPointerException
-            dos.writeUTF(r.getFullName());
-            dos.writeUTF(r.getLocation());
-            dos.writeUTF(r.getHomePage());
+
+            dos.writeBoolean(isNotNull(r.getUuid()));
+            if (isNotNull(r.getUuid()))
+                dos.writeUTF((r.getUuid()));
+
+            dos.writeBoolean(isNotNull(r.getFullName()));
+            if (isNotNull(r.getFullName()))
+                dos.writeUTF((r.getFullName()));
+
+            dos.writeBoolean(isNotNull(r.getLocation()));
+            if (isNotNull(r.getLocation()))
+                dos.writeUTF((r.getLocation()));
+
+            dos.writeBoolean(isNotNull(r.getHomePage()));
+            if (isNotNull(r.getHomePage()))
+                dos.writeUTF((r.getHomePage()));
+
             Map<ContactType, String> contacts = r.getContacts();
             dos.writeInt(contacts.size());
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
@@ -38,9 +55,18 @@ public class DataStreamFileStorage extends FileStorage {
     protected Resume read(File file) {
         Resume r = new Resume();
         try (InputStream is = new FileInputStream(file); DataInputStream dis = new DataInputStream(is)) {
-            r.setFullName(dis.readUTF());
-            r.setLocation(dis.readUTF());
-            r.setHomePage(dis.readUTF());
+            if (dis.readBoolean())
+                r.setUuid(dis.readUTF());
+
+            if (dis.readBoolean())
+                r.setFullName(dis.readUTF());
+
+            if (dis.readBoolean())
+                r.setLocation(dis.readUTF());
+
+            if (dis.readBoolean())
+                r.setHomePage(dis.readUTF());
+
             int contactsSize = dis.readInt();
             for (int i = 0; i < contactsSize; i++) {
                 r.addContact(ContactType.VALUES[dis.readInt()], dis.readUTF());
@@ -49,7 +75,7 @@ public class DataStreamFileStorage extends FileStorage {
         } catch (IOException e) {
             throw new WebAppException("Couldn't read file " + file.getAbsolutePath(), e);
         }
-        return null;
+        return r;
 
     }
 }

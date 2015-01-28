@@ -38,6 +38,10 @@ public class Resume implements Serializable {
     public Resume() {
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public Map<ContactType, String> getContacts() {
         return contacts;
     }

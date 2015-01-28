@@ -5,6 +5,7 @@ import ru.javawebinar.webapp.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,8 +72,12 @@ public abstract class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doGetAll() {
-        //TODO read all
-        return null;
+        String[] list = dir.list();
+        List<Resume> result = new ArrayList<>();
+
+        for (String item : list) result.add(doLoad(getContext(item)));
+
+        return result;
     }
 
     @Override
