@@ -5,13 +5,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.ContactType;
-import ru.javawebinar.webapp.model.Resume;
+import ru.javawebinar.webapp.model.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -22,6 +18,7 @@ import static org.junit.Assert.assertEquals;
  */
 abstract public class AbstractStorageTest {
     private Resume R1, R2, R3;
+    private List<String> LIST = new ArrayList<>();
 
     protected IStorage storage;
 
@@ -32,18 +29,26 @@ abstract public class AbstractStorageTest {
 
     @Before
     public void before() {
+        LIST.add("JAXB");
+        LIST.add("JSON");
+
         R1 = new Resume("Полное Имя1", "location1");
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
+        R1.addSection(SectionType.OBJECTIVE, new TextSection("Position", "Java developer"));
+        R1.addSection(SectionType.ACHIEVEMENT, new MultiTextSection(LIST));
         R2 = new Resume("Полное Имя2", null);
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
+        R2.addSection(SectionType.OBJECTIVE, new TextSection("Position", "Java developer"));
+        R2.addSection(SectionType.ACHIEVEMENT, new MultiTextSection(LIST));
         R3 = new Resume("Полное Имя3", null);
+        R3.addSection(SectionType.OBJECTIVE, new TextSection("Position", "Java developer"));
+        R3.addSection(SectionType.ACHIEVEMENT, new MultiTextSection(LIST));
         storage.clear();
         storage.save(R3);
         storage.save(R1);
         storage.save(R2);
-        // TODO add sections
     }
 
     @Test

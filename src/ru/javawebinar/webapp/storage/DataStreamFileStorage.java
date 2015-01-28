@@ -1,10 +1,11 @@
 package ru.javawebinar.webapp.storage;
 
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.ContactType;
-import ru.javawebinar.webapp.model.Resume;
+import ru.javawebinar.webapp.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +47,36 @@ public class DataStreamFileStorage extends FileStorage {
                 dos.writeInt(entry.getKey().ordinal());
                 dos.writeUTF(entry.getValue());
             }
+
             // TODO section implementation
+            Map<SectionType, Section> sections = r.getSections();
+            dos.writeInt(sections.size());
+            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+                dos.writeInt(entry.getKey().ordinal());
+
+                if (entry.getKey() == SectionType.OBJECTIVE) {
+                    if (!(entry.getValue() instanceof TextSection)) {
+                        throw new WebAppException(SectionType.OBJECTIVE + " must be always a TextSection type");
+                    }
+                    dos.writeUTF(((TextSection) entry.getValue()).getTitle());
+                    dos.writeUTF(((TextSection) entry.getValue()).getComment());
+                    continue;
+                }
+
+                if (entry.getKey() == SectionType.ACHIEVEMENT) {
+                    if (!(entry.getValue() instanceof MultiTextSection)) {
+                        throw new WebAppException(SectionType.ACHIEVEMENT + " must be always a MultiTextSection type");
+                    }
+
+                    MultiTextSection multi = (MultiTextSection) entry.getValue();
+
+                    // write the number of elements
+                    dos.writeInt(multi.getValues().size());
+
+                    for (String item : multi.getValues())
+                        dos.writeUTF(item);
+                }
+            }
         } catch (IOException e) {
             throw new WebAppException("Couldn't write file " + file.getAbsolutePath(), r, e);
         }
@@ -71,7 +101,30 @@ public class DataStreamFileStorage extends FileStorage {
             for (int i = 0; i < contactsSize; i++) {
                 r.addContact(ContactType.VALUES[dis.readInt()], dis.readUTF());
             }
+
             // TODO section implementation
+            int sectionsSize = dis.readInt();
+            for (int i = 0; i < sectionsSize; i++) {
+                SectionType sectionType = SectionType.VALUES[dis.readInt()];
+
+                if (sectionType == SectionType.OBJECTIVE) {
+                    r.addSection(sectionType, new TextSection(dis.readUTF(), dis.readUTF()));
+                    continue;
+                }
+
+                if (sectionType == SectionType.ACHIEVEMENT) {
+                    // read the number of elements
+                    int achievemetListSize = dis.readInt();
+                    List<String> achievemetList = new ArrayList<>(achievemetListSize);
+
+                    for (int j = 0; j < achievemetListSize; j++)
+                        achievemetList.add(dis.readUTF());
+
+                    r.addSection(sectionType, new MultiTextSection(achievemetList));
+                }
+
+            }
+
         } catch (IOException e) {
             throw new WebAppException("Couldn't read file " + file.getAbsolutePath(), e);
         }

@@ -20,4 +20,6 @@ public enum SectionType {
     public String getTitle() {
         return title;
     }
+
+    public static SectionType[] VALUES = SectionType.values();
 }
