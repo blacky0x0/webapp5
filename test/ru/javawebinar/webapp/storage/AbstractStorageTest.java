@@ -7,6 +7,7 @@ import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
+import ru.javawebinar.webapp.model.SectionType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,7 +44,10 @@ abstract public class AbstractStorageTest {
         storage.save(R3);
         storage.save(R1);
         storage.save(R2);
-        // TODO add sections
+//        R1.addObjective("Objective1");
+//        R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
+//        R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
+        //TODO add EXPERIENCE and EDUCATION
     }
 
     @Test

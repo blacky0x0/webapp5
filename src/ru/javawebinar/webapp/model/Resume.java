@@ -7,7 +7,6 @@ import java.util.*;
  * gkislin
  * 12.12.2014.
  */
-// TODO add Serializable and serialVersionUID to all model classes
 public class Resume implements Serializable {
     static final long serialVersionUID = 1L;
 
@@ -36,6 +35,11 @@ public class Resume implements Serializable {
     }
 
     public Resume() {
+    }
+
+    public Resume(String uuid) {
+        this.uuid = uuid;
+
     }
 
     public Map<ContactType, String> getContacts() {
@@ -90,6 +94,14 @@ public class Resume implements Serializable {
         this.homePage = homePage;
     }
 
+    public void addObjective(String value) {
+        addSection(SectionType.OBJECTIVE, new TextSection(value));
+    }
+
+    public void addMultiTextSection(SectionType type, String... values) {
+        addSection(type, new MultiTextSection(values));
+    }
+
     @Override
     public int hashCode() {
         return uuid.hashCode();
@@ -115,6 +127,10 @@ public class Resume implements Serializable {
     @Override
     public String toString() {
         return "fullName" + fullName + " (" + uuid + ")";
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
 /*
