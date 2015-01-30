@@ -1,5 +1,8 @@
 package ru.javawebinar.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
@@ -7,6 +10,9 @@ import java.util.*;
  * gkislin
  * 12.12.2014.
  */
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Serializable {
     static final long serialVersionUID = 1L;
 
@@ -100,6 +106,10 @@ public class Resume implements Serializable {
 
     public void addMultiTextSection(SectionType type, String... values) {
         addSection(type, new MultiTextSection(values));
+    }
+
+    public void addOrganizationSection(SectionType type, Organization... organizations) {
+        addSection(type, new OrganizationSection(organizations));
     }
 
     @Override

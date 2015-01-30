@@ -6,9 +6,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.ContactType;
+import ru.javawebinar.webapp.model.Organization;
 import ru.javawebinar.webapp.model.Resume;
 import ru.javawebinar.webapp.model.SectionType;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,11 +46,23 @@ abstract public class AbstractStorageTest {
         R1.addObjective("Objective1");
         R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
         R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
+        //TODO
+/*
+        R1.addOrganizationSection(SectionType.EXPERIENCE,
+                new Organization("Organization11", null,
+                        new Organization.Period(LocalDate.of(2005, Month.JANUARY, 1), Organization.Period.NOW, "position1", "content1"),
+                        new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2")),
+                new Organization("Organization12", "http://Organization12.ru"));
+        R1.addOrganizationSection(SectionType.EDUCATION,
+                new Organization("Institute", null,
+                        new Organization.Period(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
+                        new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
+                new Organization("Organization12", "http://Organization12.ru"));
+*/
         storage.clear();
         storage.save(R3);
         storage.save(R1);
         storage.save(R2);
-        //TODO add EXPERIENCE and EDUCATION
     }
 
     @Test
@@ -70,7 +85,8 @@ abstract public class AbstractStorageTest {
 
     @Test
     public void testLoad() throws Exception {
-        assertEquals(R1, storage.load(R1.getUuid()));
+        Resume load = storage.load(R1.getUuid());
+        assertEquals(R1, load);
         assertEquals(R2, storage.load(R2.getUuid()));
         assertEquals(R3, storage.load(R3.getUuid()));
     }
