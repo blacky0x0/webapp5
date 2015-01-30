@@ -1,6 +1,5 @@
 package ru.javawebinar.webapp.storage;
 
-import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.*;
 
 import java.io.*;
@@ -20,8 +19,10 @@ public class DataStreamFileStorage extends FileStorage {
         super(path);
     }
 
-    protected void write(File file, Resume resume) {
-        try (FileOutputStream fos = new FileOutputStream(file); final DataOutputStream dos = new DataOutputStream(fos)) {
+    @Override
+    protected void write(OutputStream os, Resume resume) throws IOException {
+        try (final DataOutputStream dos = new DataOutputStream(os)) {
+            writeString(dos, resume.getUuid());
             writeString(dos, resume.getFullName());
             writeString(dos, resume.getLocation());
             writeString(dos, resume.getHomePage());
@@ -52,14 +53,14 @@ public class DataStreamFileStorage extends FileStorage {
                         break;
                 }
             }
-        } catch (IOException e) {
-            throw new WebAppException("Couldn't write file " + file.getAbsolutePath(), resume, e);
         }
     }
 
-    protected Resume read(File file) {
-        Resume r = new Resume(file.getName());
-        try (InputStream is = new FileInputStream(file); DataInputStream dis = new DataInputStream(is)) {
+    @Override
+    protected Resume read(InputStream is) throws IOException {
+        Resume r = new Resume();
+        try (DataInputStream dis = new DataInputStream(is)) {
+            r.setUuid(readString(dis));
             r.setFullName(readString(dis));
             r.setLocation(readString(dis));
             r.setHomePage(readString(dis));
@@ -81,13 +82,11 @@ public class DataStreamFileStorage extends FileStorage {
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        // TODO section implementation
+                        // TODO section
                         break;
                 }
             }
             return r;
-        } catch (IOException e) {
-            throw new WebAppException("Couldn't read file " + file.getAbsolutePath(), e);
         }
     }
 
