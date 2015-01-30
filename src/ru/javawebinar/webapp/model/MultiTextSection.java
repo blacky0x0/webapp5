@@ -27,6 +27,9 @@ public class MultiTextSection extends Section {
         return values;
     }
 
+    public MultiTextSection() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
