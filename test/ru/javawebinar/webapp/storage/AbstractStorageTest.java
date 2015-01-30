@@ -40,13 +40,13 @@ abstract public class AbstractStorageTest {
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
         R3 = new Resume("Полное Имя3", null);
+        R1.addObjective("Objective1");
+        R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
+        R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
         storage.clear();
         storage.save(R3);
         storage.save(R1);
         storage.save(R2);
-//        R1.addObjective("Objective1");
-//        R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
-//        R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
         //TODO add EXPERIENCE and EDUCATION
     }
 

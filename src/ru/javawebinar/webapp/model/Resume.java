@@ -126,7 +126,14 @@ public class Resume implements Serializable {
 
     @Override
     public String toString() {
-        return "fullName" + fullName + " (" + uuid + ")";
+        return "Resume{" +
+                "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", location='" + location + '\'' +
+                ", homePage='" + homePage + '\'' +
+                ", contacts=" + contacts +
+                ", sections=" + sections +
+                '}';
     }
 
     public void setUuid(String uuid) {
