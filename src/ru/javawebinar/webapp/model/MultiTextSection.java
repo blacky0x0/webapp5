@@ -1,6 +1,9 @@
 package ru.javawebinar.webapp.model;
 
-import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -8,28 +11,23 @@ import java.util.List;
  * 26.12.2014.
  */
 public class MultiTextSection extends Section {
-    private List<String> values = new ArrayList<>();
+    static final long serialVersionUID = 1L;
 
-    public MultiTextSection() {}
+    private List<String> values;
+
+    public MultiTextSection(String... values) {
+        this(new LinkedList<>(Arrays.asList(values)));
+    }
 
     public MultiTextSection(List<String> values) {
         this.values = values;
     }
 
-    public MultiTextSection(MultiTextSection section) {
-        this.values = new ArrayList<>(section.values);
-    }
-
-    public void addValue(String value) {
-        this.values.add(value);
-    }
-
-    public void setValues(List<String> values) {
-        this.values = values;
-    }
-
     public List<String> getValues() {
         return values;
+    }
+
+    public MultiTextSection() {
     }
 
     @Override
@@ -51,8 +49,6 @@ public class MultiTextSection extends Section {
 
     @Override
     public String toString() {
-        return "MultiTextSection{" +
-                "values=" + values +
-                '}';
+        return values.toString();
     }
 }

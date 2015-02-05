@@ -33,7 +33,7 @@ abstract public class AbstractStorage<C> implements IStorage {
         logger.info("Save resume with uuid=" + r.getUuid());
         C ctx = getContext(r);
         if (exist(ctx)) {
-            throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
+            throw new WebAppException("Resume " + r.getUuid() + " is already exist", r);
         }
         doSave(ctx, r);
     }
@@ -45,7 +45,7 @@ abstract public class AbstractStorage<C> implements IStorage {
         logger.info("Update resume with " + r.getUuid());
         C ctx = getContext(r);
         if (!exist(ctx)) {
-            throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
+            throw new WebAppException("Resume " + r.getUuid() + " is not exist", r);
         }
         doUpdate(ctx, r);
     }
@@ -57,7 +57,7 @@ abstract public class AbstractStorage<C> implements IStorage {
         logger.info("Load resume with uuid=" + uuid);
         C ctx = getContext(uuid);
         if (!exist(ctx)) {
-            throw new WebAppException("Resume " + uuid + "not exist");
+            throw new WebAppException("Resume " + uuid + " is not exist");
         }
         return doLoad(ctx);
     }
@@ -69,7 +69,7 @@ abstract public class AbstractStorage<C> implements IStorage {
         logger.info("Delete resume with uuid=" + uuid);
         C ctx = getContext(uuid);
         if (!exist(ctx)) {
-            throw new WebAppException("Resume " + uuid + "not exist", uuid);
+            throw new WebAppException("Resume " + uuid + " is not exist", uuid);
         }
         doDelete(ctx);
     }

@@ -13,7 +13,7 @@ import java.util.List;
  * 26.12.2014.
  */
 public class ArrayStorage extends AbstractStorage<Integer> {
-    private static final int LIMIT = 100;
+    private static final int LIMIT = 10000;
 
     private Resume[] array = new Resume[LIMIT];
     private int size = 0;

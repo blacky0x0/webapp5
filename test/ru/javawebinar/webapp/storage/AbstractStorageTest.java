@@ -5,9 +5,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.*;
+import ru.javawebinar.webapp.model.ContactType;
+import ru.javawebinar.webapp.model.Organization;
+import ru.javawebinar.webapp.model.Resume;
+import ru.javawebinar.webapp.model.SectionType;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -17,8 +25,8 @@ import static org.junit.Assert.assertEquals;
  * 09.01.2015.
  */
 abstract public class AbstractStorageTest {
+    public static final String FILE_STORAGE = "./file_storage";
     private Resume R1, R2, R3;
-    private List<String> LIST = new ArrayList<>();
 
     protected IStorage storage;
 
@@ -29,22 +37,29 @@ abstract public class AbstractStorageTest {
 
     @Before
     public void before() {
-        LIST.add("JAXB");
-        LIST.add("JSON");
-
         R1 = new Resume("Полное Имя1", "location1");
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
-        R1.addSection(SectionType.OBJECTIVE, new TextSection("Position", "Java developer"));
-        R1.addSection(SectionType.ACHIEVEMENT, new MultiTextSection(LIST));
         R2 = new Resume("Полное Имя2", null);
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
-        R2.addSection(SectionType.OBJECTIVE, new TextSection("Position", "Java developer"));
-        R2.addSection(SectionType.ACHIEVEMENT, new MultiTextSection(LIST));
         R3 = new Resume("Полное Имя3", null);
-        R3.addSection(SectionType.OBJECTIVE, new TextSection("Position", "Java developer"));
-        R3.addSection(SectionType.ACHIEVEMENT, new MultiTextSection(LIST));
+        R1.addObjective("Objective1");
+        R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
+        R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
+        //TODO
+/*
+        R1.addOrganizationSection(SectionType.EXPERIENCE,
+                new Organization("Organization11", null,
+                        new Organization.Period(LocalDate.of(2005, Month.JANUARY, 1), Organization.Period.NOW, "position1", "content1"),
+                        new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2")),
+                new Organization("Organization12", "http://Organization12.ru"));
+        R1.addOrganizationSection(SectionType.EDUCATION,
+                new Organization("Institute", null,
+                        new Organization.Period(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
+                        new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
+                new Organization("Organization12", "http://Organization12.ru"));
+*/
         storage.clear();
         storage.save(R3);
         storage.save(R1);
@@ -71,7 +86,8 @@ abstract public class AbstractStorageTest {
 
     @Test
     public void testLoad() throws Exception {
-        assertEquals(R1, storage.load(R1.getUuid()));
+        Resume load = storage.load(R1.getUuid());
+        assertEquals(R1, load);
         assertEquals(R2, storage.load(R2.getUuid()));
         assertEquals(R3, storage.load(R3.getUuid()));
     }

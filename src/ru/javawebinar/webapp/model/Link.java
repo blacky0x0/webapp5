@@ -1,12 +1,15 @@
 package ru.javawebinar.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 
 /**
  * GKislin
  * 19.12.2014.
  */
-public class Link implements Serializable {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Link  implements Serializable {
     static final long serialVersionUID = 1L;
 
     public static Link EMPTY = new Link();

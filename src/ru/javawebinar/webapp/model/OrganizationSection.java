@@ -1,6 +1,9 @@
 package ru.javawebinar.webapp.model;
 
-import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -8,12 +11,10 @@ import java.util.List;
  * 26.12.2014.
  */
 public class OrganizationSection extends Section {
-    private List<Organization> values = new ArrayList<>();
+    private List<Organization> values;
 
-    public OrganizationSection() {}
-
-    public OrganizationSection(OrganizationSection section) {
-        this.values = new ArrayList<>(section.values);
+    public OrganizationSection(Organization... values) {
+        this.values = new LinkedList<>(Arrays.asList(values));
     }
 
 }
