@@ -5,10 +5,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.ContactType;
-import ru.javawebinar.webapp.model.Organization;
-import ru.javawebinar.webapp.model.Resume;
-import ru.javawebinar.webapp.model.SectionType;
+import ru.javawebinar.webapp.model.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -48,18 +45,16 @@ abstract public class AbstractStorageTest {
         R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
         R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
         //TODO
-/*
         R1.addOrganizationSection(SectionType.EXPERIENCE,
-                new Organization("Organization11", null,
+                new Organization(new Link("Organization11", null),
                         new Organization.Period(LocalDate.of(2005, Month.JANUARY, 1), Organization.Period.NOW, "position1", "content1"),
                         new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2")),
-                new Organization("Organization12", "http://Organization12.ru"));
+                new Organization(new Link("Organization12", "http://Organization12.ru")));
         R1.addOrganizationSection(SectionType.EDUCATION,
-                new Organization("Institute", null,
+                new Organization(new Link("Institute", null),
                         new Organization.Period(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
                         new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-                new Organization("Organization12", "http://Organization12.ru"));
-*/
+                new Organization(new Link("Organization12", "http://Organization12.ru")));
         storage.clear();
         storage.save(R3);
         storage.save(R1);
