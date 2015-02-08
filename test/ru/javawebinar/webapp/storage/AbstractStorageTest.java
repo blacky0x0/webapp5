@@ -44,7 +44,7 @@ abstract public class AbstractStorageTest {
         R1.addObjective("Objective1");
         R1.addMultiTextSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
         R1.addMultiTextSection(SectionType.QUALIFICATIONS, "Java", "SQL");
-        //TODO
+
         R1.addOrganizationSection(SectionType.EXPERIENCE,
                 new Organization(new Link("Organization11", null),
                         new Organization.Period(LocalDate.of(2005, Month.JANUARY, 1), Organization.Period.NOW, "position1", "content1"),

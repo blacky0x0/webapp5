@@ -37,6 +37,26 @@ public class Organization implements Serializable {
     }
 
 
+    public Link getLink() {
+        return link;
+    }
+
+    public void setLink(Link link) {
+        this.link = link;
+    }
+
+    public List<Period> getPeriods() {
+        return periods;
+    }
+
+    public void addPeriod(Period period) {
+        periods.add(period);
+    }
+
+    public void setPeriods(List<Period> periods) {
+        this.periods = periods;
+    }
+
     //@XmlAccessorType(XmlAccessType.PROPERTY)
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Period implements Serializable {

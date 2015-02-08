@@ -3,6 +3,7 @@ package ru.javawebinar.webapp.storage;
 import ru.javawebinar.webapp.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -49,7 +50,7 @@ public class DataStreamFileStorage extends FileStorage {
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        // TODO implement
+                        writeCollection(dos, ((OrganizationSection) section).getValues(), value -> writeOrganization(dos, value));
                         break;
                 }
             }
@@ -82,12 +83,52 @@ public class DataStreamFileStorage extends FileStorage {
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        // TODO section
+                        r.addSection(sectionType,
+                                new OrganizationSection(readList(dis, () -> readOrganization(dis))));
                         break;
                 }
             }
             return r;
         }
+    }
+
+    private void writeOrganization(DataOutputStream dos, Organization organization) throws IOException {
+        writeString(dos, organization.getLink().getName());
+        writeString(dos, organization.getLink().getUrl());
+        dos.writeInt(organization.getPeriods().size());
+
+        for (Organization.Period period : organization.getPeriods()) {
+            dos.writeInt(period.getStartDate().getYear());
+            dos.writeInt(period.getStartDate().getMonthValue());
+
+            dos.writeInt(period.getEndDate().getYear());
+            dos.writeInt(period.getEndDate().getMonthValue());
+
+            writeString(dos, period.getPosition());
+            writeString(dos, period.getContent());
+        }
+    }
+
+    private Organization readOrganization(DataInputStream dis) throws IOException {
+        Organization organization = new Organization();
+        Link link = new Link(readString(dis), readString(dis));
+
+        int numPeriods = dis.readInt();
+
+        organization.setLink(link);
+
+        for (int i = 0; i < numPeriods; i++) {
+            Organization.Period curPeriod = new Organization.Period();
+
+            curPeriod.setStartDate(LocalDate.of(dis.readInt(), dis.readInt(), 1));
+            curPeriod.setEndDate(LocalDate.of(dis.readInt(), dis.readInt(), 1));
+
+            curPeriod.setPosition(readString(dis));
+            curPeriod.setContent(readString(dis));
+            organization.addPeriod(curPeriod);
+        }
+
+        return organization;
     }
 
     private void writeString(DataOutputStream dos, String str) throws IOException {
