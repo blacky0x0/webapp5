@@ -13,6 +13,8 @@ public class OrganizationSection extends Section {
 
     private List<Organization> values;
 
+    public OrganizationSection() {}
+
     public OrganizationSection(Organization... values) {
         this.values = new LinkedList<>(Arrays.asList(values));
     }

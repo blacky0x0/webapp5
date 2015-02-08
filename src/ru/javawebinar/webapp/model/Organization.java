@@ -1,10 +1,14 @@
 package ru.javawebinar.webapp.model;
 
+import ru.javawebinar.webapp.util.LocalDateAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +21,7 @@ public class Organization implements Serializable {
     static final long serialVersionUID = 1L;
 
     private Link link;
-    private List<Period> periods;
+    private List<Period> periods = new ArrayList<>();
 
     public Organization() {
     }
@@ -32,14 +36,20 @@ public class Organization implements Serializable {
         this.periods = periods;
     }
 
+
+    //@XmlAccessorType(XmlAccessType.PROPERTY)
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Period implements Serializable {
         static final long serialVersionUID = 1L;
 
         public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
 
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
+
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate endDate;
+
         private String position;
         private String content;
 
@@ -54,6 +64,42 @@ public class Organization implements Serializable {
             this.startDate = startDate;
             this.endDate = endDate;
             this.position = position;
+            this.content = content;
+        }
+
+        public static LocalDate getNow() {
+            return NOW;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(LocalDate startDate) {
+            this.startDate = startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(LocalDate endDate) {
+            this.endDate = endDate;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
             this.content = content;
         }
 
